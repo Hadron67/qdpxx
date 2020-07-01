@@ -13,7 +13,7 @@ string(REGEX MATCHALL  "\\-\\I[^-]+" BASE_EXTRA_INCLUDES ${BASE_EXTRA_CXXFLAGS})
 
 # Replace "-I" (ie \-\I ) with nothing
 string(REGEX REPLACE "\\-\\I" "" EXTRA_INCLUDE_DIRS ${BASE_EXTRA_INCLUDES})
-separate_arguments(${EXTRA_INCLUDE_DIRS})
+separate_arguments(EXTRA_INCLUDE_DIRS)
 
 # Find the library we built and add it as an imported target
 # with appropriate include dir and location
@@ -37,7 +37,8 @@ add_qdpxx_lib(qdp)
 # Add on Extra includes
 foreach( INCDIR ${EXTRA_INCLUDE_DIRS})
  message(STATUS "Adding ${INCDIR}")
- set_target_properties(qdp PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${INCDIR})       
+#  set_target_properties(qdp PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${INCDIR}) 
+ target_compile_options(qdp INTERFACE ${INCDIR})      
 endforeach()
 
 
@@ -61,7 +62,7 @@ if( QDPXX_LIBINTRIN )
 endif()
 
 # Check if using FILEDB
-string(STRIP "@FILEDB_DIR" QDPXX_FILEDB)
+string(STRIP "@FILEDB_DIR@" QDPXX_FILEDB)
 if( QDPXX_FILEDB ) 
    add_qdpxx_lib(filehash)
    add_qdpxx_lib(filedb)
@@ -74,7 +75,7 @@ string(STRIP "@LDFLAGS@ @HDF5_LDFLAGS@ @QMP_LDFLAGS@ @QMT_LDFLAGS@" QDPXX_LDFLAG
 string(STRIP "@HDF5_LIBS@ @LIBXML2_LIBS@ @QMP_LIBS@ @LIBS@ @QMT_LIBS@" QDPXX_LIBS)
 
 if( QDPXX_LDFLAGS ) 
-  separate_argumnets(${QDPXX_LDFLAGS})
+  separate_arguments(${QDPXX_LDFLAGS})
   target_link_options(qdp INTERFACE ${QDPXX_LDFLAGS})
 endif()
 

@@ -14,3 +14,6 @@ docs/usr/html
 docs/usr/warnings
 include/qdp_config_internal.h.in
 include/qdp_config_internal.h.in~
+
+**/*~
+*build
